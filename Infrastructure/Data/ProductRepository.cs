@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
+    // This is a NON Generic Repository.
     public class ProductRepository : IProductRepository
     {
         private readonly StoreContext _context;
