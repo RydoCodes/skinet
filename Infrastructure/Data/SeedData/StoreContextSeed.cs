@@ -18,7 +18,7 @@ namespace Infrastructure.Data.SeedData
             {
                 if (!context.ProductBrands.Any())
                 {
-                    var brandsData = File.ReadAllText("../Infrastructure/Data/SeedData/brands.json");
+                    var brandsData = File.ReadAllText("../Infrastructure/Data/SeedData/brands.json"); // This code will execute from Program.cs file and hence we need to go to upper level to reach infrastructure folder.
 
                     var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 

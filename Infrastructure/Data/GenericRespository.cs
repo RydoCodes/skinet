@@ -19,9 +19,9 @@ namespace Infrastructure.Data
         }
 
   
-        public async Task<T> GetByIdAsync(int id)// Get ProducctByID without specification pattern but then you wont get ProductType and ProductBrand
+        public async Task<T> GetByIdAsync(int id)// Get ProductByID without specification pattern but then you wont get ProductType and ProductBrand
         {
-            return await _context.Set<T>().FindAsync(id); 
+            return await _context.Set<T>().FindAsync(id); //Set<T> - Creates a DbSet<TEntity> that can be used to query and save instances of TEntity
         }
 
         public async Task<IReadOnlyList<T>> ListAllAsync()// Get All Product without specification pattern but then you wont get ProductType and ProductBrand
@@ -38,7 +38,7 @@ namespace Infrastructure.Data
 
         public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec) // Get All Product with specification pattern and get ProductType and ProductBrand
         {
-            IQueryable<T> finalquery = ApplySpecification(spec); //Applying the Specification->Includes and Criteria
+            IQueryable<T> finalquery = ApplySpecification(spec); //Applying the Specification->Includes and Criteria to the Enntity which is Product.
 
             return await finalquery.ToListAsync(); // ToListAsync() : Asynchronously creates a List<T> from an IQueryable<out T> by enumerating it asynchronously.
         }

@@ -10,31 +10,36 @@ using Core.Interfaces;
 using Core.Specifications;
 using API.Dtos;
 using AutoMapper;
+using API.Errors;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productsRepo;
         private IGenericRepository<ProductBrand> _productBrandRepo;
         private readonly IGenericRepository<ProductType> _productTypeRepo;
         private readonly IMapper _mapper;
+        private readonly IProductRepository _nongenericrepo;
 
         public ProductsController(IGenericRepository<Product> productsRepo,
-        IGenericRepository<ProductBrand> productBrandRepo,IGenericRepository<ProductType> productTypeRepo, IMapper mapper)
+        IGenericRepository<ProductBrand> productBrandRepo,IGenericRepository<ProductType> productTypeRepo, IMapper mapper, IProductRepository nongenericrepo)
         {
             _productsRepo=productsRepo;
             _productBrandRepo=productBrandRepo;
             _productTypeRepo=productTypeRepo;
             _mapper=mapper;
-
+            _nongenericrepo = nongenericrepo;
         }
 
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
         {
+
+            //var products = await _nongenericrepo.GetProductsAsync();
+           // return Ok(products);
+             
             //var Products = await _productsRepo.ListAllAsync(); // using Repository Pattern
 
             var spec = new ProductsWithTypesAndBrandsSpecification(); // Setting the Specification -> Includes and Criteria
@@ -62,6 +67,9 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // We do not need to add here as swagger alredy knows it
+        //[ProducesResponseType(StatusCodes.Status404NotFound)] // need to add this but this would return default error parameters which are returned by NotFound() method :)
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             //Product product = await _productsRepo.GetByIdAsync(id);  // using Repository Pattern
@@ -82,8 +90,10 @@ namespace API.Controllers
 
             // return Ok(productToReturnDto);
 
+            if (product == null) return NotFound(new ApiResponse(404));
+
             var ProductToReturnDto = _mapper.Map<Product,ProductToReturnDto>(product);
-            return ProductToReturnDto;
+            return Ok(ProductToReturnDto);
         }
 
         [HttpGet("brands")]
