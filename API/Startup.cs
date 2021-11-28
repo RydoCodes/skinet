@@ -39,6 +39,13 @@ namespace API
 
             services.AddApplicationServices(); // Extension : ApplicationServicesExtension.cs
             services.AddSwaggerDocumentation();// Extension : SwaggerServiceExtensions.cs
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
 
         }
 
@@ -48,7 +55,7 @@ namespace API
 
             app.UseMiddleware<ExceptionMiddleware>(); // Handles Null reference Exceptions.
 
-            app.UseSwaggerDocumentation();
+            app.UseSwaggerDocumentation(); // Extension : SwaggerServiceExtensions.cs
 
             if (env.IsDevelopment())
             {
@@ -62,6 +69,8 @@ namespace API
             app.UseRouting();
 
             app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
                 
             app.UseAuthorization();
 
