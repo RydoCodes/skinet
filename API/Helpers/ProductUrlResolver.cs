@@ -3,6 +3,8 @@ using AutoMapper;
 using Core.Entities;
 using Microsoft.Extensions.Configuration;
 
+
+// linked with MappingProfile. cs to Map the ProductURL and return full address of URL.
 namespace API.Helpers
 {
     public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, string>

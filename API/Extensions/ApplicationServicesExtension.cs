@@ -25,6 +25,7 @@ namespace API.Extensions
 			services.AddScoped<IProductRepository, ProductRepository>(); // Normal Repository
 			services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRespository<>)));
 
+            // This is to display validation errors.
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actioncontext =>

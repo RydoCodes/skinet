@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace API.Middleware
 {
+
+	//app.UseMiddleware<ExceptionMiddleware>(); : handle null reference exception
 	public class ExceptionMiddleware
 	{
 		private readonly RequestDelegate _next;
