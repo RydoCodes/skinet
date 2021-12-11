@@ -25,7 +25,9 @@ namespace API.Extensions
 			services.AddScoped<IProductRepository, ProductRepository>(); // Normal Repository
 			services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRespository<>)));
 
-            // This is to display validation errors.
+            // This is to display validation errors -
+            //{{url}}/api/products/4 was expected
+            //{{url}}/api/products/xyz causes this.
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actioncontext =>
@@ -40,7 +42,7 @@ namespace API.Extensions
                         Errors = errors
                     };
 
-                    return new BadRequestObjectResult(errorresponse);
+                    return new BadRequestObjectResult(errorresponse); // BadRequestObjectResult expects an instance of response type and returns status code as 400
 
                 };
             });

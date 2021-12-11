@@ -43,16 +43,17 @@ namespace Infrastructure.Data
             return await finalquery.ToListAsync(); // ToListAsync() : Asynchronously creates a List<T> from an IQueryable<out T> by enumerating it asynchronously.
         }
 
+        ////////// Below is Private Method ////////////
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
+        }
+
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             IQueryable<T> finalquery = ApplySpecification(spec);
             return await finalquery.CountAsync();
         }
 
-        ////////// Below is Private Method ////////////
-        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
-        {
-            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(),spec);
-        }
     }
 }

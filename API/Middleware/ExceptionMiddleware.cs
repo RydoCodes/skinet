@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace API.Middleware
 {
 
-	//app.UseMiddleware<ExceptionMiddleware>(); : handle null reference exception
+	//app.UseMiddleware<ExceptionMiddleware>(); : handle null reference exception, 500 Status Code
 	public class ExceptionMiddleware
 	{
 		private readonly RequestDelegate _next;

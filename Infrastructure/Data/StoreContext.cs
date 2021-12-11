@@ -25,7 +25,7 @@ namespace API.Infrastructure.Data
 
 
         // Order By Price does not work because Price property is set to decimal and SQLLite cannot order by a property in decimal. So we need to convert the Price from Decima
-        // to float when hitting the database and back to decimal when taking data back from database.
+        // to double when hitting the database and back to decimal when taking data back from database.
             if(Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
             {
                 foreach(var entityType in modelBuilder.Model.GetEntityTypes())

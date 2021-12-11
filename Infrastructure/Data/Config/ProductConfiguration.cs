@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Config
 {
+    // Called by StoreContext.cs :  modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly())
     public class ProductConfiguration : IEntityTypeConfiguration<Product> // You are configuring the Product Entity in your own way.
     {
         public void Configure(EntityTypeBuilder<Product> builder)

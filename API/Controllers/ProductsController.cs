@@ -16,6 +16,10 @@ using API.Helpers;
 
 namespace API.Controllers
 {
+    // NotFound() :  Creates an Microsoft.AspNetCore.Mvc.NotFoundResult that produces a Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound
+    //ok ()       :  Creates an Microsoft.AspNetCore.Mvc.OkObjectResult object that produces an Microsoft.AspNetCore.Http.StatusCodes.Status200OK
+
+
     public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productsRepo;
@@ -37,7 +41,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts
             ([FromQuery] ProductSpecParams productParams)
-        {
+         {
 
             //var products = await _nongenericrepo.GetProductsAsync();
            // return Ok(products);
@@ -97,7 +101,7 @@ namespace API.Controllers
 
             // return Ok(productToReturnDto);
 
-            if (product == null) return NotFound(new ApiResponse(404));
+           if (product == null) return NotFound(new ApiResponse(404)); // NotFound() originally results 404 but using new ApiResponse(404) as parameter overrides what NotFound() sends back
 
             var ProductToReturnDto = _mapper.Map<Product,ProductToReturnDto>(product);
             return Ok(ProductToReturnDto);
@@ -105,7 +109,7 @@ namespace API.Controllers
 
         [HttpGet("brands")]
         public async Task<ActionResult<ProductBrand>> GetProductBrand()
-        {
+            {
             IReadOnlyList<ProductBrand> productbrand = await _productBrandRepo.ListAllAsync();
             return Ok(productbrand);
         }
