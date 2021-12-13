@@ -13,10 +13,11 @@ import { PagerComponent } from './components/pager/pager.component';
   ],
   imports: [
     CommonModule,
-    PaginationModule.forRoot()
+   // PaginationModule.forRoot(),
+   PaginationModule
   ],
   exports: [
-    PaginationModule,
+    //PaginationModule,
     PagingHeaderComponent,
     PagerComponent
   ]
