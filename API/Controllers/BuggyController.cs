@@ -31,7 +31,7 @@ namespace API.Controllers
         {
             var thing = _context.Products.Find(42); // this will be null
 
-            var thingToReturn = thing.ToString(); // this will give null reference error.
+            var thingToReturn = thing.ToString(); // 500 Internal Server Error - this will give null reference error.
 
             return Ok();
         }
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         [HttpGet("badrequest/{id}")]
-        public ActionResult GetNotFoundRequest(int id) //Generate a validation kind of error by passing string instead of an integer.
+        public ActionResult GetNotFoundRequest(int id) //400 - Generate a validation kind of error by passing string instead of an integer.
         {
             return Ok();
         }

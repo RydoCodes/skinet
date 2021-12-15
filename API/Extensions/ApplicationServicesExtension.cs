@@ -39,7 +39,7 @@ namespace API.Extensions
 
                     var errorresponse = new ApiValidationErrorResponse
                     {
-                        Errors = errors
+                        Errors = errors.Append("Rydo check Validation Error")
                     };
 
                     return new BadRequestObjectResult(errorresponse); // BadRequestObjectResult expects an instance of response type and returns status code as 400
