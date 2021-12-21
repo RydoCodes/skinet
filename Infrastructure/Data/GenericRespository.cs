@@ -18,14 +18,15 @@ namespace Infrastructure.Data
             _context =context;
         }
 
-  
-        public async Task<T> GetByIdAsync(int id)// Get ProductByID without specification pattern but then you wont get ProductType and ProductBrand
+        // Get ProductByID without specification pattern but then you wont get ProductType and ProductBrand
+        public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id); //Set<T> - Creates a DbSet<TEntity> that can be used to query and save instances of TEntity
         }
 
-        public async Task<IReadOnlyList<T>> ListAllAsync()// Get All Product without specification pattern but then you wont get ProductType and ProductBrand
-        {
+        
+        public async Task<IReadOnlyList<T>> ListAllAsync()// Get All Product without specification pattern but then you wont get ProductType and ProductBrand                                                        
+        {                                                  // Used to get ProductBrands and ProductTypes
             return await _context.Set<T>().ToListAsync();
         }
 
@@ -33,26 +34,26 @@ namespace Infrastructure.Data
         {
             IQueryable<T> finalquery = ApplySpecification(spec);
 
-            return await finalquery.FirstOrDefaultAsync(); 
+            return await finalquery.FirstOrDefaultAsync(); // FirstOrDefaultAsync() is defined for a variable of type IQueryable but FindAsync is not.
         }
 
-        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec) // Get All Product with specification pattern and get ProductType and ProductBrand
+        public async Task<IReadOnlyList<T>> ListAsyncwithSpec(ISpecification<T> spec) // Get All Product with specification pattern and get ProductType and ProductBrand
         {
             IQueryable<T> finalquery = ApplySpecification(spec); //Applying the Specification->Includes and Criteria to the Enntity which is Product.
 
             return await finalquery.ToListAsync(); // ToListAsync() : Asynchronously creates a List<T> from an IQueryable<out T> by enumerating it asynchronously.
         }
 
+        public async Task<int> CountAsyncwithSpec(ISpecification<T> spec) // Get list of total products sorted, or, searched, or by brand or type
+        {
+            IQueryable<T> finalquery = ApplySpecification(spec);
+            return await finalquery.CountAsync();
+        }
+
         ////////// Below is Private Method ////////////
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
-        }
-
-        public async Task<int> CountAsync(ISpecification<T> spec)
-        {
-            IQueryable<T> finalquery = ApplySpecification(spec);
-            return await finalquery.CountAsync();
         }
 
     }

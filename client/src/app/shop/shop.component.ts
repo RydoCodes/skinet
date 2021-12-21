@@ -12,7 +12,7 @@ import { ShopService } from './shop.service';
 })
 export class ShopComponent implements OnInit {
 
-  @ViewChild('search', {static: true}) searchterm: ElementRef;
+  @ViewChild('search', {static: false}) searchterm: ElementRef;
 
   products: IProduct[];
   brands: IBrand[];
@@ -22,7 +22,7 @@ export class ShopComponent implements OnInit {
   shopParams = new shopParams();
 
   sortOptions = [
-    {name: 'Alphabetical', value: 'name'},
+    {name: 'Alphabetical', value: 'defaultisbyname'},
     {name: 'Price: Low to High', value: 'priceAsc'},
     {name: 'Price: High to Low', value: 'priceDesc'}
   ];
@@ -45,7 +45,7 @@ export class ShopComponent implements OnInit {
 
     }, error => {
       console.log(error);
-    });
+    },);
   }
 
   getBrands(){

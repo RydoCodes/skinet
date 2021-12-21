@@ -33,12 +33,7 @@ export class ShopService {
     params = params.append('PageSize', shopParams.pageSize.toString());
 
 
-    return this.http.get<IPagination>(this.baseUrl + 'products' , {observe: 'response', params})
-      .pipe(
-        map(response => {
-          return response.body;
-        })
-      );
+    return this.http.get<IPagination>(this.baseUrl + 'products' , {params})
   }
 
   getProduct(id: number){

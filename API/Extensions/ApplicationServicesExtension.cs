@@ -43,6 +43,7 @@ namespace API.Extensions
                     };
 
                     return new BadRequestObjectResult(errorresponse); // BadRequestObjectResult expects an instance of response type and returns status code as 400
+                                                                      // Although BadRequest() also returns 400 bad request but its a function present in ControllerBase class.
 
                 };
             });

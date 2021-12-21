@@ -7,17 +7,19 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
+import { catchError, delay } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { BusyService } from '../services/busy.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private toastr: ToastrService) {}
+  constructor(private router: Router, private toastr: ToastrService, private busyservice: BusyService) {}
 
   // next of type HttpHandler is http response coming back.
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
+      // delay(1000),
        catchError( error => {
           if (error){
             // validation error
@@ -40,7 +42,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
             // internal server error
             if (error.status === 500){
-              const navigationExtras: NavigationExtras = {state: {error: error.error}};
+              const navigationExtras: NavigationExtras = {state: {rydoerror: error.error}};
               this.router.navigateByUrl('/server-error', navigationExtras);
             }
           }

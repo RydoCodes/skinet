@@ -1,7 +1,49 @@
-.btn-group {
-  width:100%
+// .btn-group {
+//   width:100%
+// }
+
+// .btn{
+//   width: 50%;
+// }
+
+// css above commented on Secton 12 : Pzazaa - 129. Styling the Product Items
+
+.button{
+  width: 30%;
+  height: 41px;
 }
 
-.btn{
-  width: 50%;
+// It is like when I hover on the relative div having image class then the image should get transparent by value 2
+// and any buttons inside the image class should be transparent by 2
+.image :hover{
+  opacity: 1;
+  & button {
+    transform: none;
+    opacity: 1;
+  }
 }
+
+// complicated css
+.hover-overlay{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top:0; // places both button in the middle of the relative div
+  left:0;
+  background: rgba(255,255,255,0.5);
+  opacity: 0;
+  transition: all 0.5s;
+
+  & button {
+    z-index: 1000;
+    transition: all 0.5s;
+  }
+  & button:first-of-type{
+    transform: translateX(-20px);
+  }
+  & button:last-of-type{
+    transform: translateX(20px);
+  }
+}
+
+

@@ -14,10 +14,12 @@ import { PagerComponent } from './components/pager/pager.component';
   imports: [
     CommonModule,
    // PaginationModule.forRoot(),
-   PaginationModule
+    PaginationModule,
+    // so that pagercomponent can make use of it
   ],
   exports: [
-    //PaginationModule,
+    // PaginationModule, // you exported it when you had to use its component straight in shop html and
+    // pager component component was not introduced at that time.
     PagingHeaderComponent,
     PagerComponent
   ]

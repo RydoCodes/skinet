@@ -38,26 +38,33 @@ namespace API.Controllers
             _nongenericrepo = nongenericrepo;
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult<List<Product>>> GetProducts()
+        //{
+        //    var Products = await _nongenericrepo.GetProductsAsync();
+        //    return Ok(Products);
+        //}
+
         [HttpGet]
-        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts
-            ([FromQuery] ProductSpecParams productParams)
-         {
+        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams productParams)
+        //public async Task<ActionResult<List<Product>>> GetProducts()
+        {
 
-            //var products = await _nongenericrepo.GetProductsAsync();
-           // return Ok(products);
-             
-            //var Products = await _productsRepo.ListAllAsync(); // using Repository Pattern
+            //var products = await _nongenericrepo.GetProductsAsync(); // Non Generic Repository Pattern
+            // return Ok(products);
 
-            var spec = new ProductsWithTypesAndBrandsSpecification(productParams); // Setting the Specification -> Includes and Criteria
+            //var Products = await _productsRepo.ListAllAsync();     // Generic Repository Pattern with no soecification
+            // return Ok(products);
 
-            var countSpec = new ProductWithFiltersForCountSpecification(productParams);
+            var spec = new ProductsWithTypesAndBrandsSpecification(productParams);         // Setting the Specification -> Includes and Criteria
+            var Products = await _productsRepo.ListAsyncwithSpec(spec);                            // using Generic Repository Pattern with Specification Pattern
 
-            var totalitems = await _productsRepo.CountAsync(countSpec); 
+            var countSpec = new ProductWithFiltersForCountSpecification(productParams);     // Setting Specification when getting the total products -> NO Includes and ONLY Criteria
+            var totalitems = await _productsRepo.CountAsyncwithSpec(countSpec);                     // using Generic Repository Pattern with Specification Pattern
 
-            var Products = await _productsRepo.ListAsync(spec); // using Repository Pattern with Specification Pattern
 
 
-            // var productToReturnDto = Products.Select(product=> new ProductToReturnDto // without using Automapper
+            // var productToReturnDto = Products.Select(product=> new ProductToReturnDto    // without using Automapper
             // {
             //     Id = product.Id,
             //     Name = product.Name,
@@ -70,9 +77,9 @@ namespace API.Controllers
 
             // return Ok(productToReturnDto);
 
-            var  data = _mapper.Map<IReadOnlyList<Product>,IReadOnlyList<ProductToReturnDto>>(Products);
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(Products);
 
-            return Ok(new Pagination<ProductToReturnDto>(productParams.PageIndex,productParams.PageSize, totalitems,data));
+            return Ok(new Pagination<ProductToReturnDto>(productParams.PageIndex, productParams.PageSize, totalitems, data));
 
 
         }
@@ -80,13 +87,18 @@ namespace API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)] // We do not need to add here as swagger alredy knows it
         //[ProducesResponseType(StatusCodes.Status404NotFound)] // need to add this but this would return default error parameters which are returned by NotFound() method :)
-        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)] // if we remove typeof(apiresponse) then swagger would get 404 but the response header would be of one returned by NotFound() and not NotFound(new ApiResponse(404)
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
+        //public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            //Product product = await _productsRepo.GetByIdAsync(id);  // using Repository Pattern
+            // Product Product = await _nongenericrepo.GetProductByIdAsync(id); // Non Generic Repository Pattern
+            // return Ok(products);
 
-            var spec = new ProductsWithTypesAndBrandsSpecification(id); // using Repository Pattern with Specification Pattern
-            Product product = await _productsRepo.GetEntityWithSpec(spec); // using Repository Pattern with Specification Pattern
+            //Product product = await _productsRepo.GetByIdAsync(id);  // Generic Repository Pattern with no soecification
+            // return Ok(products);
+
+            var spec = new ProductsWithTypesAndBrandsSpecification(id); // using Generic Repository Pattern with Specification Pattern
+            Product product = await _productsRepo.GetEntityWithSpec(spec); // using Generic Repository Pattern with Specification Pattern
 
             // var productToReturnDto = new ProductToReturnDto // without using Automapper
             // { 
@@ -109,7 +121,9 @@ namespace API.Controllers
 
         [HttpGet("brands")]
         public async Task<ActionResult<ProductBrand>> GetProductBrand()
-            {
+        {
+           // return Ok(await _nongenericrepo.GetProductBrandsAsync());
+
             IReadOnlyList<ProductBrand> productbrand = await _productBrandRepo.ListAllAsync();
             return Ok(productbrand);
         }
@@ -117,6 +131,7 @@ namespace API.Controllers
         [HttpGet("types")]
         public async Task<ActionResult<ProductType>> GetProductType()
         {
+            // return Ok(await _nongenericrepo.GetProductTypesAsync());
             IReadOnlyList<ProductType> producttype = await _productTypeRepo.ListAllAsync();
             return Ok(producttype);
         }             

@@ -21,7 +21,10 @@ namespace API.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // This will apply the settings for migration in ProductConfiguration.cs
+
+            // Remove any pending migration first after adding below statement
+            //This will apply the settings for migration in ProductConfiguration.cs
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
 
         // Order By Price does not work because Price property is set to decimal and SQLLite cannot order by a property in decimal. So we need to convert the Price from Decima
