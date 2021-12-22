@@ -24,6 +24,7 @@ namespace API.Extensions
 		{
 			services.AddScoped<IProductRepository, ProductRepository>(); // Normal Repository
 			services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRespository<>)));
+            services.AddScoped<IBasketRepository, BasketRepository>();
 
             // This is to display validation errors -
             //{{url}}/api/products/4 was expected
