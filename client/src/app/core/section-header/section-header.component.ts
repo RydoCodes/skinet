@@ -15,7 +15,7 @@ export class SectionHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.breadcrumb$ = this.bcservice.breadcrumbs$; // this is to set section header title property.
-    console.log(this.breadcrumb$);
+    // console.log(this.breadcrumb$);
   }
 
 }

@@ -19,16 +19,22 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        // If the basket is null then it creates a new basket with Id as id
         public async Task<ActionResult<CustomerBasket>> GetBasketById(string id)
         {
-            var basket = await _basketrepository.GetBasketAsync(id);
-            return Ok(basket ?? new CustomerBasket(id));
+            CustomerBasket basket = await _basketrepository.GetBasketAsync(id);
+
+            if(basket==null)
+            {
+                return new CustomerBasket(id);
+            }
+            return basket;
         }
 
         [HttpPost]
         public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasket basket)
         {
-            var updatedbasket = await _basketrepository.UpdateBasketAsync(basket);
+            CustomerBasket updatedbasket = await _basketrepository.UpdateBasketAsync(basket);
             return Ok(updatedbasket);
         }
 

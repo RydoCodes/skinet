@@ -1,9 +1,11 @@
 using API.Errors;
 using API.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+
     public class BuggyController : BaseApiController
     {
         private readonly StoreContext _context;
@@ -46,6 +48,15 @@ namespace API.Controllers
         public ActionResult GetNotFoundRequest(int id) //400 - Generate a validation kind of error by passing string instead of an integer.
         {
             return Ok();
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText()
+        {
+            return "secret Stuff";
         }
     }
 }

@@ -7,6 +7,7 @@ using API.Middleware;
 using Core.interfaces;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,10 @@ namespace API
             services.AddAutoMapper(typeof(MappingProfiles)); //specify the location/assembly of where our mapping profiles are located.
 
             services.AddControllers();
+
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<AppIdentityDbContext>(x => x.UseSqlite(_config.GetConnectionString("IdentityConnection")));
 
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
@@ -44,8 +48,9 @@ namespace API
                 return ConnectionMultiplexer.Connect(configuration);
             });
 
-            services.AddApplicationServices(); // Extension : ApplicationServicesExtension.cs
-            services.AddSwaggerDocumentation();// Extension : SwaggerServiceExtensions.cs
+            services.AddApplicationServices();        // Extension : ApplicationServicesExtension.cs
+            services.AddSwaggerDocumentation();       // Extension : SwaggerServiceExtensions.cs
+            services.AddIdentityServices(_config);    // Extension : IdentityServiceExtension.cs
 
             services.AddCors(opt =>
             {
@@ -78,6 +83,8 @@ namespace API
             app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
                 
             app.UseAuthorization();
 

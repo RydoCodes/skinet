@@ -16,13 +16,14 @@ import { LoadingInterceptor } from './core/Interceptors/loading.interceptor';
     AppComponent
   ],
   imports: [
+    // Below are  the modules loaded during application startup
     BrowserModule,
     AppRoutingModule, // This contains the routermodule which contains the parent routes aray
     BrowserAnimationsModule,
-    HttpClientModule,
+    HttpClientModule, // for getting httpclient
     CoreModule, // This contains the Navigation Bar Component.
     // ShopModule // we do not need to load shopmodule as we are only loading this when we go to route /shop,
-    NgxSpinnerModule
+    NgxSpinnerModule // This module gives <ngx-spinner> component to use inside AppComponent.html
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

@@ -38,7 +38,7 @@ namespace API.Middleware
 				context.Response.ContentType = "application/json";
 				context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-				var response = _env.IsDevelopment()
+				ApiException response = _env.IsDevelopment()
 								? new ApiException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString()) // we are giving more details when in DEV Mode
 								: new ApiException((int)HttpStatusCode.InternalServerError); // we are giving only status code when in PROD Mode.
 
@@ -47,7 +47,7 @@ namespace API.Middleware
 					PropertyNamingPolicy = JsonNamingPolicy.CamelCase
 				};
 
-				var json = JsonSerializer.Serialize(response, options);
+				string json = JsonSerializer.Serialize(response, options);
 
 				await context.Response.WriteAsync(json);
 			}

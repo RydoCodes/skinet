@@ -5,7 +5,9 @@ using API.Infrastructure.Data;
 using API.Middleware;
 using Core.interfaces;
 using Core.Interfaces;
+using Core.Interfaces.Identity;
 using Infrastructure.Data;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +24,8 @@ namespace API.Extensions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
+            services.AddScoped<ITokenService, TokenService>();
+
 			services.AddScoped<IProductRepository, ProductRepository>(); // Normal Repository
 			services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRespository<>)));
             services.AddScoped<IBasketRepository, BasketRepository>();

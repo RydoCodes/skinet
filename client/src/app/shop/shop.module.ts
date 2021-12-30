@@ -17,10 +17,10 @@ import { ShopRoutingModule } from './shop-routing.module';
   imports: [
     CommonModule, // by default
     SharedModule, // for PagingHeaderComponent and paginaion
-    //RouterModule // to add router-link attribute instead of href when we were eager loading shop component
+    // RouterModule // to add router-link attribute instead of href when we were eager loading shop component
     ShopRoutingModule // to add router-link attribute instead of href
   ],
-  //exports: [ShopComponent] // we do not need to export this as we will not be importing this module in app module
+  // exports: [ShopComponent] // we do not need to export this as we will not be importing this module in app module
                           // as app module is no longer responsible for loading the shop component.
 })
 export class ShopModule { }

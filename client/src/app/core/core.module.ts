@@ -17,17 +17,19 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   imports: [
     CommonModule,
     RouterModule,
-    // you are actually using toastr service and not toaster module anywhere.
+    // toastr service : Used in Error Interceptor and not toaster module anywhere.
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-left',
       preventDuplicates: true
     }),
-    BreadcrumbModule
+    // BreadCrumb Service : Used to change breadcrumb name in Product detail component.
+    BreadcrumbModule // This module gives <xng-breadcrumb> component to use inside SectionHeaderComponent
   ],
   exports: [NavBarComponent, SectionHeaderComponent]
 })
 export class CoreModule { }
 
-// test-error  component  : making Bad API Calls AND to show 400 Validation Error thrown back to this component from Error Interceptor
-// server-error component : to show 500 Internal Server Error Information redirected by Error Interceptor
+// test-error  component  : To show 400 Validation Error thrown back to this component by Error Interceptor
+// server-error component : To show 500 Internal Server Error Information redirected by Error Interceptor passing
+//                          a navigation extra containing error object.
 

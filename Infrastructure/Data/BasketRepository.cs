@@ -13,29 +13,32 @@ namespace Infrastructure.Data
 	{
 		private readonly IDatabase _database;
 
-		public BasketRepository(IConnectionMultiplexer redis)
+		public BasketRepository(IConnectionMultiplexer redis) // IConnectionMultiplexer :Represents the abstract multiplexer API
 		{
-			_database = redis.GetDatabase();
+			_database = redis.GetDatabase(); //GetDatabase : Obtain an interactive connection to a database inside redis
 		}
 
 		public async Task<bool> DeleteBasketAsnc(string basketId)
 		{
-			return await _database.KeyDeleteAsync(basketId);
+			bool result = await _database.KeyDeleteAsync(basketId);
+			return result; // true or false
 		}
 
 		public async Task<CustomerBasket> GetBasketAsync(string basketId)
 		{
-			var data = await _database.StringGetAsync(basketId);
-			return data.IsNull ? null : JsonSerializer.Deserialize<CustomerBasket>(data); // we are convering a redisvalue into customerbasket type
+			RedisValue data = await _database.StringGetAsync(basketId); // RedisValue : Represents values that can be stored in redis
+			return data.IsNull ? null : JsonSerializer.Deserialize<CustomerBasket>(data); // we are convering a redisvalue into customerbasket
 		}
 
 		public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket)
 		{
-			var created = await _database.StringSetAsync(basket.Id, JsonSerializer.Serialize(basket), TimeSpan.FromDays(30));
+			bool created = await _database.StringSetAsync(basket.Id, JsonSerializer.Serialize(basket), TimeSpan.FromDays(30));
+			// StringSetAsync : Set key to hold the string value. If key already holds a value, it is overwritte  regardless of its type.
 
 			if (!created) return null;
 
-			return await GetBasketAsync(basket.Id);
+			CustomerBasket updatedbasket = await GetBasketAsync(basket.Id);
+			return updatedbasket;
 		}
 	}
 }
