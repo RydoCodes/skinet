@@ -36,7 +36,7 @@ export class ProductDetailsComponent implements OnInit {
   decrementQuantity(): void{
     this.quantity--;
     this.Exceeded = '';
-    if (this.quantity === -1)
+    if (this.quantity === 0)
     {
       this.quantity++;
       this.Exceeded = '';
@@ -44,12 +44,14 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   incrementQuantity(): void{
+    if (this.quantity <= 4)
+    {
+      this.quantity++;
+    }
     if (this.quantity === 5)
     {
-      this.quantity--;
       this.Exceeded = 'You cannot select more than 5 products';
     }
-    this.quantity++;
 
   }
 

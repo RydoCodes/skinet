@@ -18,12 +18,6 @@ namespace Infrastructure.Data
 			_database = redis.GetDatabase(); //GetDatabase : Obtain an interactive connection to a database inside redis
 		}
 
-		public async Task<bool> DeleteBasketAsnc(string basketId)
-		{
-			bool result = await _database.KeyDeleteAsync(basketId);
-			return result; // true or false
-		}
-
 		public async Task<CustomerBasket> GetBasketAsync(string basketId)
 		{
 			RedisValue data = await _database.StringGetAsync(basketId); // RedisValue : Represents values that can be stored in redis
@@ -39,6 +33,12 @@ namespace Infrastructure.Data
 
 			CustomerBasket updatedbasket = await GetBasketAsync(basket.Id);
 			return updatedbasket;
+		}
+
+		public async Task<bool> DeleteBasketAsnc(string basketId)
+		{
+			bool result = await _database.KeyDeleteAsync(basketId);
+			return result; // true or false
 		}
 	}
 }

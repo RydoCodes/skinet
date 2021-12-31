@@ -1,4 +1,5 @@
 using API.Dtos;
+using API.Dtos.BasketDTOs;
 using API.Dtos.IdentityDTOs;
 using AutoMapper;
 using Core.Entities;
@@ -15,7 +16,13 @@ namespace API.Helpers
                         .ForMember(d=> d.ProductType,o=>o.MapFrom(o=> o.ProductType.Name)) // o,s : IMemberConfigurationExpression<TSource, TDestination, TMember> where Tmember is string
                         .ForMember(d=> d.PictureUrl,o=> o.MapFrom<ProductUrlResolver>());
 
+            // GetAddress of User - .Net Core Identity
             CreateMap<Address, AddressDto>().ReverseMap();
+
+            CreateMap<CustomerBasketDto, CustomerBasket>();
+            CreateMap<BasketItemDto, BasketItem>();
+
+
         }
     }
 }

@@ -15,6 +15,38 @@ namespace API.Extensions
 			services.AddSwaggerGen(rydoswag =>
 			{
 				rydoswag.SwaggerDoc("v1", new OpenApiInfo { Title = "RydoApi", Version = "v1" }); // Creates the Swagger Documentation and Swagger json file.
+
+				var securitychema = new OpenApiSecurityScheme
+				{
+					Description = "JWT Auth Bearer Scheme",
+					Name = "Authorzaton",
+					In = ParameterLocation.Header, // we tell it where authentication needs to be provided which is in header called Authorization.
+					Type = SecuritySchemeType.Http, // as our request are Http Request
+					Scheme = "bearer",
+					Reference = new OpenApiReference
+					{
+						Type = ReferenceType.SecurityScheme,
+						Id = "Bearer"
+					}
+				};
+
+				// AddSecurityDefinition : Add one or more "securityDefinitions", describing how your API is protected to the generated Swagger
+				rydoswag.AddSecurityDefinition("Bearer", securitychema);
+				var securityRequirement = new OpenApiSecurityRequirement
+				{
+					{
+						securitychema,
+						new[]
+						{
+							"Bearer"
+						}
+					}
+				};
+
+
+				// AddSecurityRequirement - Adds a global security requirement
+				rydoswag.AddSecurityRequirement(securityRequirement);
+
 			});
 			
 			return services;

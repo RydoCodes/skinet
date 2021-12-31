@@ -131,7 +131,7 @@ private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketIte
   removeitemfrombasket(item: IBasketItem): void {
     const basket = this.getCurrentBasketValue();
     // some : Determines whether the specified callback function returns true for any element of an array.
-    if (basket.items.some(i => i.id === item.id)){
+    if (basket.items.find(i => i.id === item.id)){
         basket.items = basket.items.filter(x => x.id !== item.id);
         if (basket.items.length > 0)
         {

@@ -22,7 +22,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
       positionClass: 'toast-bottom-left',
       preventDuplicates: true
     }),
-    // BreadCrumb Service : Used to change breadcrumb name in Product detail component.
+                      // BreadCrumb Service : Used to change breadcrumb name in Product detail component.
     BreadcrumbModule // This module gives <xng-breadcrumb> component to use inside SectionHeaderComponent
   ],
   exports: [NavBarComponent, SectionHeaderComponent]

@@ -47,7 +47,7 @@ namespace API.Extensions
                         Errors = errors.Append("Rydo check Validation Error")
                     };
 
-                    return new BadRequestObjectResult(errorresponse); // BadRequestObjectResult expects an instance of response type and returns status code as 400
+                    return new BadRequestObjectResult(errorresponse); // BadRequestObjectResult is a class expects an instance of response type and returns status code as 400
                                                                       // Although BadRequest() also returns 400 bad request but its a function present in ControllerBase class.
 
                 };

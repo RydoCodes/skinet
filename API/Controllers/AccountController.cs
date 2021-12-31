@@ -105,7 +105,8 @@ namespace API.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(_mapper.Map<Address, AddressDto>(user.Address));
+                AddressDto addressDto = _mapper.Map<Address, AddressDto>(user.Address);
+                return Ok(addressDto);
             }
             else
             {
@@ -144,6 +145,25 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
+            bool response = CheckEmailExistsAsync(registerDto.Email).Result.Value;
+            if(response)
+            {
+                var validationresponse = new ApiValidationErrorResponse
+                {
+                    Errors = new[]
+                    { "Email Address is already in use"
+                    }
+                };
+
+                //Way 1
+               //return BadRequest(validationresponse);
+
+                //Way 2
+                return new BadRequestObjectResult(validationresponse);
+
+                // Bad Request and BadRequestObjectResult produces same response.
+            }
+
             var user = new AppUser
             {
                 DisplayName = registerDto.DisplayName,
@@ -155,7 +175,7 @@ namespace API.Controllers
 
             if(!result.Succeeded) // fails when user enters a weak password
             {
-                return BadRequest(new ApiResponse(400));
+                return  BadRequest(new ApiResponse(400));
             }
 
             return new UserDto
@@ -165,6 +185,9 @@ namespace API.Controllers
                 Token = _tokenservice.CreateToken(user),
                 DisplayName = user.DisplayName
             };
+
+            // Default accepts No Userame but fails in validation returns 400 Bad Request
+            // Default does not accept No 
         }
     }
 }
