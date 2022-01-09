@@ -21,29 +21,30 @@ namespace API
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            using(var scope = host.Services.CreateScope())
+            IHost host = CreateHostBuilder(args).Build();
+            using(IServiceScope scope = host.Services.CreateScope())
             {
-                var services = scope.ServiceProvider;
-                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                IServiceProvider services = scope.ServiceProvider;
+                ILoggerFactory loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 try
                 {
-                    var context = services.GetRequiredService<StoreContext>();
+                    StoreContext context = services.GetRequiredService<StoreContext>();
                     await context.Database.MigrateAsync(); //Asynchronously applies any pending migrations for the context to the database. 
                                                            //Will create the database if it does not already exist everytime when we start our application.
 
                     await StoreContextSeed.SeedAsync(context,loggerFactory); // After creating the database, seed it if its empty.
 
-                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                    var identityContext = services.GetRequiredService<AppIdentityDbContext>();
-                    await identityContext.Database.MigrateAsync();
+                    UserManager<AppUser> userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    AppIdentityDbContext identityContext = services.GetRequiredService<AppIdentityDbContext>();
+                    await identityContext.Database.MigrateAsync();//Asynchronously applies any pending migrations for the context to the database. 
+                                                                  //Will create the database if it does not already exist everytime when we start our application.
 
-                    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+                    await AppIdentityDbContextSeed.SeedUsersAsync(userManager); // Seeds an AppUser with its address with a default password.
                      
                 }
                 catch(Exception ex)
                 {
-                    var logger = loggerFactory.CreateLogger<Program>();
+                    ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
                     logger.LogError(ex,"An Error has been occured");
                 }
 

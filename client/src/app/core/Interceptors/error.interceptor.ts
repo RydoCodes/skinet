@@ -32,7 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                   this.toastr.error(error.error.message, error.error.statusCode);
                 }
               }
-            // bad request
+            // UnAuthorissed
             if (error.status === 401){
               this.toastr.error(error.error.message, error.error.statusCode);
             }

@@ -60,8 +60,8 @@ namespace API.Controllers
             };
         }
 
-        [HttpGet("emailexists")]
-        public async Task<ActionResult<Boolean>> CheckEmailExistsAsync([FromQuery] string email)
+        [HttpGet("emailexists")] 
+        public async Task<ActionResult<bool>> CheckEmailExistsAsync([FromQuery] string email)
         {
             return await _userManager.FindByEmailAsync(email) != null; 
         }
@@ -112,10 +112,7 @@ namespace API.Controllers
             {
                 return BadRequest("Probelem Updating the user");
             }
-
-
         }
-
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto logindto)

@@ -8,10 +8,10 @@ namespace API.Dtos.IdentityDTOs
 {
 	public class RegisterDto
 	{
-		[Required]
+		[Required(ErrorMessage = "Display Name jaruri hai. Set at RegisterDTO")]
 		public string DisplayName { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Email galat hai and format me nahi hai. Set at RegisterDTO")]
 		[EmailAddress]
 		public string Email { get; set; }
 

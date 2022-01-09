@@ -19,6 +19,7 @@ namespace Infrastructure.Services
 		{
 			this._config = config;
 			_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"])); // ["Token:Key"]
+			//SymmetricSecurityKey needs bytes[]
 			//Symmetric Encryption means that there is no public and private key like there is in SSL.
 			//Same key is used to encrypt and decrypt the signature here.
 			//We would need to create a symmetric security key so that we can sign the token.
@@ -33,8 +34,9 @@ namespace Infrastructure.Services
 				new Claim(ClaimTypes.GivenName, user.DisplayName)
 			};
 
-			// This algorithm will encrypt the _key using hmacsha512 Algorithm -> ["Token:Key"] and then Sign the token
-			var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature); // Microsoft.IdentityModel.Tokens
+			// This algorithm will encrypt the _key using hmacsha512 Algorithm -> ["Token:Key"] and then Sign the token 
+			// and creds is signed in token.
+			SigningCredentials creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature); // Microsoft.IdentityModel.Tokens
 
 			//Our token will ony be valid if it is before the expiry date and it was issued by Issuer.
 			//SecurityTokenDescriptor : Contains some information which used to create a security token.
@@ -48,7 +50,7 @@ namespace Infrastructure.Services
 			};
 
 			//JwtSecurityTokenHandler() handles our token
-			var tokenhandler = new JwtSecurityTokenHandler(); // System.IdentityModel.Tokens.Jwt
+			JwtSecurityTokenHandler tokenhandler = new JwtSecurityTokenHandler(); // System.IdentityModel.Tokens.Jwt
 
 			// JwtSecurityTokenHandler.CreateToken() creates a JSON Web Token
 			SecurityToken token = tokenhandler.CreateToken(tokenDescriptor);

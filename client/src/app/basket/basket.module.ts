@@ -13,7 +13,7 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     BasketRoutingModule,
-    SharedModule
+    SharedModule // To use OrderTotals Component inside Basket Component html
   ]
 })
 export class BasketModule { }

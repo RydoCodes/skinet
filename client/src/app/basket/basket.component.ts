@@ -18,15 +18,18 @@ export class BasketComponent implements OnInit {
     this.basket$ = this.basketservice.basket$;
   }
 
+  // Not a service call
   incrementItemQuantity(item: IBasketItem): void
   {
     this.basketservice.incrementItemQuantity(item);
   }
 
+  // Not a service call
   decrementItemQuantity(item: IBasketItem): void{
     this.basketservice.DecrementItemQuantity(item);
   }
 
+  // Not a service call
   removeBasketItem(item: IBasketItem): void{
     this.basketservice.removeitemfrombasket(item);
   }

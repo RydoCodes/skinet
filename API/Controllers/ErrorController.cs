@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("errors/{code}")] // handle error related to endpoint that does not exist.
+    // handle error related to endpoint that does not exist
+    // If the token is not valided in the code nser service.AddAuthentication(JWT Stuff) then 401 error is created from here.
+    [Route("errors/{code}")]
     [ApiExplorerSettings(IgnoreApi =true)]
     public class ErrorController : BaseApiController
     {

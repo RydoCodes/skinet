@@ -8,7 +8,7 @@ import { Basket, IBasket, IBasketItem, IBasketTotals } from '../shared/models/ba
 import { IProduct } from '../shared/models/product';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // It is injected to our app module at startup
 })
 export class BasketService {
 
@@ -36,9 +36,9 @@ export class BasketService {
   }
 
   // Currently getBasket is being called only via addItemToBasket at the end.
-  // getBasket is Subscribed in the service only
+  // setBasket is Subscribed in the service only and is not called from any other ts file.
   setBasket(basket: IBasket): Subscription {
-    return this.http.post(this.baseUrl + 'basket', basket)
+    return this.http.post<IBasket>(this.baseUrl + 'basket', basket)
     .subscribe((response: IBasket) => {
       this.basketSource.next(response);
       this.calculateTotals();

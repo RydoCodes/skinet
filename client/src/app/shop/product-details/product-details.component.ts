@@ -16,9 +16,9 @@ export class ProductDetailsComponent implements OnInit {
 
   product: IProduct;
   quantity = 1;
-  Exceeded: string = '';
+  Exceeded = '';
 
-  constructor(private shopservice: ShopService, private activateRoute: ActivatedRoute, private bcservice: BreadcrumbService,
+  constructor(private shopservice: ShopService, private activateRouted: ActivatedRoute, private bcservice: BreadcrumbService,
               private basketservice: BasketService) {
     this.bcservice.set('@productDetails', '');
   }
@@ -56,7 +56,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   loadProduct(): void{
-    this.shopservice.getProduct(+this.activateRoute.snapshot.paramMap.get('id')).subscribe(product => {
+    this.shopservice.getProduct(+this.activateRouted.snapshot.paramMap.get('id')).subscribe(product => {
       this.product = product;
       this.bcservice.set('@productDetails', product.name);
     }, error => {
