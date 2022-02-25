@@ -17,13 +17,17 @@ namespace API.Extensions
 			string email = emalclaim.Value;
 
 			return await input.Users.Include(x => x.Address).SingleOrDefaultAsync(x => x.Email == email);
+			// Users is of type IQueryable<AppUser>
 		}
 
 		public static async Task<AppUser> FindByEmailFromClaimsPrincipal(this UserManager<AppUser> input, ClaimsPrincipal user)
 		{
-			string email = user?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
+			Claim emalclaim = user?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+			string email = emalclaim.Value;
 
-			return await input.Users.SingleOrDefaultAsync(x => x.Email == email);
+			AppUser loggedinuser = await input.Users.SingleOrDefaultAsync(x => x.Email == email);
+
+			return loggedinuser;
 		}
 	}
 }

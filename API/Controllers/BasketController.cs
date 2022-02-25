@@ -32,6 +32,7 @@ namespace API.Controllers
             {
                 return new CustomerBasket(id);
             }
+
             return basket;
         }
 

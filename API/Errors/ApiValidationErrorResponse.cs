@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Errors
 {
-	// Handling Validation Errors | Customising ApiAttribute Behavious
+	// Handling Validation Errors | Customising ApiAttribute Behaviour
 	public class ApiValidationErrorResponse : ApiResponse
 	{
 		public ApiValidationErrorResponse() : base(400)

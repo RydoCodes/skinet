@@ -18,11 +18,12 @@ namespace Infrastructure.Data.SeedData
             {
                 if (!context.ProductBrands.Any())
                 {
-                    var brandsData = File.ReadAllText("../Infrastructure/Data/SeedData/brands.json"); // This code will execute from Program.cs file and hence we need to go to upper level to reach infrastructure folder.
+                    // This code will execute from Program.cs file and hence we need to go to upper level to reach infrastructure folder.
+                    string brandsData = File.ReadAllText("../Infrastructure/Data/SeedData/brands.json");
 
-                    var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
+                    List<ProductBrand> brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 
-                    foreach (var item in brands)
+                    foreach (ProductBrand item in brands)
                     {
                         context.ProductBrands.Add(item);
                     }
@@ -32,11 +33,11 @@ namespace Infrastructure.Data.SeedData
 
                 if(!context.ProductTypes.Any())
                 {
-                    var typesdata = File.ReadAllText("../Infrastructure/Data/SeedData/types.json");
+                    string typesdata = File.ReadAllText("../Infrastructure/Data/SeedData/types.json");
 
-                    var types = JsonSerializer.Deserialize<List<ProductType>>(typesdata);
+                    List<ProductType> types = JsonSerializer.Deserialize<List<ProductType>>(typesdata);
 
-                    foreach(var item in types)
+                    foreach(ProductType item in types)
                     {
                         context.ProductTypes.Add(item);
                     }
@@ -46,11 +47,11 @@ namespace Infrastructure.Data.SeedData
 
                 if(!context.Products.Any())
                 {
-                    var productsdata = File.ReadAllText("../Infrastructure/Data/SeedData/products.json");
+                    string productsdata = File.ReadAllText("../Infrastructure/Data/SeedData/products.json");
 
-                    var products = JsonSerializer.Deserialize<List<Product>>(productsdata);
+                    List<Product> products = JsonSerializer.Deserialize<List<Product>>(productsdata);
 
-                    foreach(var item in products)
+                    foreach(Product item in products)
                     {
                         context.Products.Add(item);
                     }
@@ -62,7 +63,7 @@ namespace Infrastructure.Data.SeedData
             }
             catch(Exception ex)
             {
-                var logger = loggerFactory.CreateLogger<StoreContextSeed>();
+                ILogger<StoreContextSeed> logger = loggerFactory.CreateLogger<StoreContextSeed>();
                 logger.LogError(ex.Message);
             }
         }

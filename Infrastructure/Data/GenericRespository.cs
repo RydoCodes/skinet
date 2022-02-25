@@ -18,6 +18,8 @@ namespace Infrastructure.Data
             _context =context;
         }
 
+        /* ------------Generic Repository Pattern with no specification------------------------*/
+
         // Get ProductByID without specification pattern but then you wont get ProductType and ProductBrand
         public async Task<T> GetByIdAsync(int id)
         {
@@ -29,6 +31,8 @@ namespace Infrastructure.Data
         {                                                  // Used to get ProductBrands and ProductTypes
             return await _context.Set<T>().ToListAsync();
         }
+
+        /* ------------Generic Repository Pattern with specification------------------------*/
 
         public async Task<T> GetEntityWithSpec(ISpecification<T> spec)  // Get ProducctByID with specification pattern and get ProductType and ProductBrand
         {
@@ -53,7 +57,8 @@ namespace Infrastructure.Data
         ////////// Below is Private Method ////////////
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
-            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
+            IQueryable<T> query = SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
+            return query;
         }
 
     }

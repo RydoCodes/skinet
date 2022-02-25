@@ -44,8 +44,8 @@ namespace API
                 }
                 catch(Exception ex)
                 {
-                    ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
-                    logger.LogError(ex,"An Error has been occured");
+                    ILogger<Program> rydologger = loggerFactory.CreateLogger<Program>();
+                    rydologger.LogError(ex,"An Error has been occured while attempting to either Create Migration or Creating a Database");
                 }
 
             }

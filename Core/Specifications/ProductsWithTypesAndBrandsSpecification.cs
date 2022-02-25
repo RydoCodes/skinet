@@ -4,8 +4,7 @@ namespace Core.Specifications
 {
     public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product>
     {
-        public ProductsWithTypesAndBrandsSpecification(ProductSpecParams productParams)
-            : base(x=>
+        public ProductsWithTypesAndBrandsSpecification(ProductSpecParams productParams): base(x=>
                 (string.IsNullOrEmpty(productParams.Search) || x.Name.ToLower().Contains(productParams.Search)) 
             &&
                 (!productParams.BrandId.HasValue || x.ProductBrandId == productParams.BrandId)
@@ -13,6 +12,7 @@ namespace Core.Specifications
                 (!productParams.TypeId.HasValue || x.ProductTypeId == productParams.TypeId)
             )
         {
+            // Below methods are protected method of BaseSpecification<T>
             AddInclude(x=>x.ProductType);
             AddInclude(x=>x.ProductBrand);
             AddOrderBy(x => x.Name);

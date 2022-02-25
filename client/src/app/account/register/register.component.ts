@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
 
   // AsyncValidatorFn - A function that receives a control and returns a Promise or observable that emits validation errors
   //                     if present, otherwise null.
-  validateEmailNotTaken(): AsyncValidatorFn{
+  validateEmailNotTaken(): AsyncValidatorFn | Observable<null>{
     return control => {
       return timer(500).pipe( // So Its like after half a second do whateevr is happeing under pipe.
         switchMap(() => {

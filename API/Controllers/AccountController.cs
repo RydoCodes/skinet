@@ -161,7 +161,7 @@ namespace API.Controllers
                 // Bad Request and BadRequestObjectResult produces same response.
             }
 
-            var user = new AppUser
+            AppUser user = new AppUser
             {
                 DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,

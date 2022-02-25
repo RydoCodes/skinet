@@ -10,16 +10,18 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 export class TextInputComponent implements OnInit, ControlValueAccessor {
 
   @ViewChild('input', {static: true}) input: ElementRef;
-  @Input() type = 'text';
+  @Input() type = 'text'; // 'text' is the default value of type input property
   @Input() label: string;
 
   // @Self : Not look for any other shared dependency of NgControl that is already in use
+  // inorder to access the validation, we need to get access to the control itself by injecting the control in the constructor.
+  // public because we will need to access this inside out html template as well.
   constructor(@Self() public controlDir: NgControl) {
     this.controlDir.valueAccessor = this; // Gives access to our control directive inside our component
   }
 
   ngOnInit(): void {
-    const control = this.controlDir.control; // Get current control
+    const control = this.controlDir.control; // Gets current control
     const validators = control.validator ? [control.validator] : []; // check what validators have been set on this particular control.
     const asyncValidators = control.asyncValidator ? [control.asyncValidator] : [];
 

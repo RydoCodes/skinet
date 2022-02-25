@@ -7,7 +7,7 @@ namespace Core.Specifications
 {
     public interface ISpecification<T>
     {
-        // Property for filtering by ProductId,ProductTypeId,ProductBrandId
+        // Property for filtering by ProductId,ProductTypeId,ProductBrandId,search parameter, sort
          Expression<Func<T,bool>> Criteria {get;}
 
 

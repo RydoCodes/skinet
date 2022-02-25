@@ -9,6 +9,7 @@ namespace API.Helpers
 {
     public class MappingProfiles : Profile
     {
+        // CreateMap is a non abstract function in Profile class and it has its own logic.
         public MappingProfiles()
         {
             CreateMap<Product,ProductToReturnDto>()

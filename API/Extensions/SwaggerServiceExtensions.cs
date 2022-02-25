@@ -16,6 +16,7 @@ namespace API.Extensions
 			{
 				rydoswag.SwaggerDoc("v1", new OpenApiInfo { Title = "RydoApi", Version = "v1" }); // Creates the Swagger Documentation and Swagger json file.
 
+				// Swagger Setup to support Bearer Authentication
 				var securitychema = new OpenApiSecurityScheme
 				{
 					Description = "JWT Auth Bearer Scheme",

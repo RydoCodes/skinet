@@ -36,7 +36,7 @@ export class ShopService {
 
 
     return this.http.get<IPagination>(this.baseUrl + 'products' , {observe: 'response', params})
-    .pipe(
+    .pipe<IPagination>(
       map((response: HttpResponse<IPagination>) => {
         return response.body;
       })

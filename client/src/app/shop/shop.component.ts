@@ -22,7 +22,7 @@ export class ShopComponent implements OnInit {
 
   shopParams = new shopParams();
 
-  sortOptions = [
+  sortOptions: any[] = [
     {name: 'Alphabetical', value: 'defaultisbyname'},
     {name: 'Price: Low to High', value: 'priceAsc'},
     {name: 'Price: High to Low', value: 'priceDesc'}

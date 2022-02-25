@@ -1,8 +1,10 @@
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace API.Infrastructure.Data
 {
@@ -22,20 +24,23 @@ namespace API.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Remove any pending migration first after adding below statement
             //This will apply the settings for migration in ProductConfiguration.cs
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            // Remove any pending migration first after adding below statement
+            Assembly a = Assembly.GetExecutingAssembly();
+            modelBuilder.ApplyConfigurationsFromAssembly(a); 
+            //ApplyConfigurationsFromAssembly - ApplyConfigurationsFromAssemblyApplies configuration from 
+            // all IEntityTypeConfiguration and IQueryTypeConfigurationinstances that aredefined in provided assembly.
 
-
-        // Order By Price does not work because Price property is set to decimal and SQLLite cannot order by a property in decimal. So we need to convert the Price from Decima
-        // to double when hitting the database and back to decimal when taking data back from database.
-            if(Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+            // Order By Price does not work because Price property is set to decimal and SQLLite cannot order by a property in decimal. So we need to convert the Price from Decima
+            // to double when hitting the database and back to decimal when taking data back from database.
+            if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
             {
-                foreach(var entityType in modelBuilder.Model.GetEntityTypes())
+                foreach(IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
                 {
-                    var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
+                    IEnumerable<PropertyInfo> properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
 
-                    foreach(var property in properties)
+                    // properties now contains all the properties whose type is of type decimal.
+                    foreach (PropertyInfo property in properties)
                     {
                         modelBuilder.Entity(entityType.Name).Property(property.Name).HasConversion<double>();
                     //HasConversion : Configures the property so that the property value is converted to the given type before writing to the database and converted back when reading from the

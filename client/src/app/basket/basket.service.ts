@@ -128,6 +128,9 @@ private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketIte
       this.removeitemfrombasket(item);
     }
   }
+  // At this point, we check the lenght of baskitems after removing the basket item to remove.
+  // If the length is =0 then it means that the basketitem array is empty and we should delete the basket.
+  // If the length = 1 then it means we just have to update the basket removing that item.
   removeitemfrombasket(item: IBasketItem): void {
     const basket = this.getCurrentBasketValue();
     // some : Determines whether the specified callback function returns true for any element of an array.
@@ -146,7 +149,7 @@ private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketIte
     }
   }
   deleteBasket(basket: IBasket): void {
-    this.http.delete(this.baseUrl + 'basket?id=' + basket.id).subscribe(
+    this.http.delete<boolean>(this.baseUrl + 'basket?id=' + basket.id).subscribe(
       () => {
         this.basketSource.next(null);
         this.basketTotalSource.next(null);

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 // linked with MappingProfile. cs to Map the ProductURL and return full address of URL.
 namespace API.Helpers
 {
-    public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, string> //  Extension point to provide custom resolution for a destination value
+    public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, string> //IValueResolver :Extension point to provide custom resolution for a destination value
     {
         private readonly IConfiguration _config;
 

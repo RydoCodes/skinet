@@ -35,3 +35,4 @@ export class CoreModule { }
 // server-error component : To show 500 Internal Server Error Information redirected by Error Interceptor passing
 //                          a navigation extra containing error object.
 
+// you do not need to export serverError and NotFound Components in Core Module

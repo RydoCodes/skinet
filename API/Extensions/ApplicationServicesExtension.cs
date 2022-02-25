@@ -24,11 +24,13 @@ namespace API.Extensions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
+            // Normal Repository Registration
             services.AddScoped<ITokenService, TokenService>();
-
-			services.AddScoped<IProductRepository, ProductRepository>(); // Normal Repository
-			services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRespository<>)));
+			services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
+
+            // Generic Repository Registration
+            services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRespository<>)));
 
             // This is to display validation errors -
             //{{url}}/api/products/4 was expected
@@ -37,14 +39,14 @@ namespace API.Extensions
             {
                 options.InvalidModelStateResponseFactory = actioncontext =>
                 {
-                    var errors = actioncontext.ModelState
+                    string[] errors = actioncontext.ModelState
                                     .Where(e => e.Value.Errors.Count > 0)
                                     .SelectMany(x => x.Value.Errors)
                                     .Select(x => x.ErrorMessage).ToArray();
 
-                    var errorresponse = new ApiValidationErrorResponse
+                    ApiValidationErrorResponse errorresponse = new ApiValidationErrorResponse
                     {
-                        Errors = errors.Append("Rydo check Validation Error")
+                        Errors = errors.Append("Rydo Validation Error")
                     };
 
                     return new BadRequestObjectResult(errorresponse); // BadRequestObjectResult is a class expects an instance of response type and returns status code as 400

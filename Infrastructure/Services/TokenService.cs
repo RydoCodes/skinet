@@ -18,7 +18,7 @@ namespace Infrastructure.Services
 		public TokenService(IConfiguration config)
 		{
 			this._config = config;
-			_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"])); // ["Token:Key"]
+			_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"])); // ["Token:Key"]  //"Key": "super secret key",
 			//SymmetricSecurityKey needs bytes[]
 			//Symmetric Encryption means that there is no public and private key like there is in SSL.
 			//Same key is used to encrypt and decrypt the signature here.
@@ -28,19 +28,21 @@ namespace Infrastructure.Services
 
 		public string CreateToken(AppUser user) // Token is created for an user.
 		{
-			var claims = new List<Claim>
+			List<Claim> claims = new List<Claim>
 			{
 				new Claim(ClaimTypes.Email,user.Email),
 				new Claim(ClaimTypes.GivenName, user.DisplayName)
 			};
 
-			// This algorithm will encrypt the _key using hmacsha512 Algorithm -> ["Token:Key"] and then Sign the token 
-			// and creds is signed in token.
+			// This algorithm will encrypt the _key using hmacsha512 Algorithm -> ["Token:Key"] and then Sign the token
+			// HmacSha512s Encryption is done on the Symmetric key _key
+			// Creds is a HmacSha512s encrypted signed in key
 			SigningCredentials creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature); // Microsoft.IdentityModel.Tokens
 
 			//Our token will ony be valid if it is before the expiry date and it was issued by Issuer.
 			//SecurityTokenDescriptor : Contains some information which used to create a security token.
-			var tokenDescriptor = new SecurityTokenDescriptor
+
+			SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
 				Expires = DateTime.Now.AddDays(7),

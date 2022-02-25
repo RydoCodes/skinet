@@ -27,12 +27,12 @@ export class ErrorInterceptor implements HttpInterceptor {
               if (error.error.errors){ // meaning this is 400 validation error
                   throw error.error; // throw our own error object back to the Error Component
                 }
-                else // meaning this 400 Not Found Request
+                else // meaning this 400 BAD Request
                 {
                   this.toastr.error(error.error.message, error.error.statusCode);
                 }
               }
-            // UnAuthorissed
+            // UnAuthorised
             if (error.status === 401){
               this.toastr.error(error.error.message, error.error.statusCode);
             }

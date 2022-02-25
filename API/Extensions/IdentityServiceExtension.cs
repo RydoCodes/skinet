@@ -23,18 +23,34 @@ namespace API.Extensions
 
 			builder.AddSignInManager<SignInManager<AppUser>>(); //Adds a Microsoft.AspNetCore.Identity.SignInManager for the UserType.
 
+
+			//// Changing .Net Core setup to accept weak Passwords.
+			//// Before testing comment out Annotations on RegisterDTO and LoginDTO used to handle weak password on the dto level.
+			//services.AddIdentity<AppUser, IdentityRole>(rydoconfigureoptions => {
+			//	rydoconfigureoptions.Password.RequiredLength = 2;
+			//	rydoconfigureoptions.Password.RequiredUniqueChars = 0;
+			//	rydoconfigureoptions.Password.RequireUppercase = false;
+			//	rydoconfigureoptions.Password.RequireNonAlphanumeric = false;
+			//	rydoconfigureoptions.Password.RequireLowercase = false;
+			//	rydoconfigureoptions.Password.RequireDigit = false;
+			//}) // Add Identity services to the App. 
+
+		 // .AddEntityFrameworkStores<AppIdentityDbContext>(); // Using Entity Framework core to retrieve user and role information from the underlying sql servr databas using EF Core.
+
 			//we actually receive this token here from the client
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
 				{
-					//TokenValidationParameters:  we need to tell Identity what we want to validate here.
+					//TokenValidationParameters:  we need to tell Identity what we want to validate here. We are validating the key and issuer for now.
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
 						ValidateIssuerSigningKey = true, //False might leave anonymous authentication ON 
 						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"])), // we set this up when creating the token
+
+						ValidateIssuer = true, // which in readl is Token: Issuer = https://Localhost:5001,
 						ValidIssuer = config["Token:Issuer"], //https://Localhost:5001
-						ValidateIssuer=true, // which in readl is Token: Issuer = https://Localhost:5001,
-						ValidateAudience = false
+
+						ValidateAudience = false // false because we did not set up Audience in the Token Descriptor.
 					};
 				});
 

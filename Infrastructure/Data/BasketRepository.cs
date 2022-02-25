@@ -21,12 +21,23 @@ namespace Infrastructure.Data
 		public async Task<CustomerBasket> GetBasketAsync(string basketId)
 		{
 			RedisValue data = await _database.StringGetAsync(basketId); // RedisValue : Represents values that can be stored in redis
-			return data.IsNull ? null : JsonSerializer.Deserialize<CustomerBasket>(data); // we are convering a redisvalue into customerbasket
+
+			if(data.IsNull)
+			{
+				return null;
+			}
+			else
+			{
+				CustomerBasket basket = JsonSerializer.Deserialize<CustomerBasket>(data);
+				return basket;
+			}
 		}
 
 		public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket)
 		{
-			bool created = await _database.StringSetAsync(basket.Id, JsonSerializer.Serialize(basket), TimeSpan.FromDays(30));
+			RedisValue basketstring = JsonSerializer.Serialize(basket);
+			bool created = await _database.StringSetAsync(basket.Id, basketstring, TimeSpan.FromDays(30));
+
 			// StringSetAsync : Set key to hold the string value. If key already holds a value, it is overwritte  regardless of its type.
 
 			if (!created) return null;

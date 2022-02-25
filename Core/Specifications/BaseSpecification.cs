@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Core.Specifications
 {
-    public class BaseSpecification<T> : ISpecification<T>
+    public abstract class BaseSpecification<T> : ISpecification<T>
     {
         public BaseSpecification()
         {        
@@ -30,21 +30,25 @@ namespace Core.Specifications
 
         public bool IsPagingEnabled { get; private set; }
 
+        // can be called directly in the class which inherit BaseSpecification<T> class
         protected void AddInclude(Expression<Func<T,Object>> includeExpression)
         {
             Includes.Add(includeExpression);
         }
 
+        // can be called directly in the class which inherit BaseSpecification<T> class
         protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
         {
-            OrderBy = orderByExpression; // Here you are able to set OrderBy coz you have set private
+            OrderBy = orderByExpression; // Here you are able to set OrderBy coz you have private set on it
         }
 
+        // can be called directly in the class which inherit BaseSpecification<T> class
         protected void AddOrderByDescending(Expression<Func<T,Object>> orderbyDesExpression)
         {
-            OrderByDescending = orderbyDesExpression;
+            OrderByDescending = orderbyDesExpression; // Here you are able to set OrderByDescending coz you have private set on it
         }
 
+        // can be called directly in the class which inherit BaseSpecification<T> class
         protected void ApplyPaging(int skip,int take)
         {
             Skip = skip;
