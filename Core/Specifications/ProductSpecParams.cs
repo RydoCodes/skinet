@@ -9,6 +9,11 @@ namespace Core.Specifications
 		public const int MaxPageSize = 50;
 		public int PageIndex { get; set; } = 1;
 
+		public int? BrandId { get; set; }
+		public int? TypeId { get; set; }
+
+		public string Sort { get; set; }
+
 		private int _pageSize =  6;
 
 		public int PageSize
@@ -17,11 +22,6 @@ namespace Core.Specifications
 			set => _pageSize = (value>MaxPageSize)? MaxPageSize : value;
 		}
 
-		public int? BrandId { get; set; }
-		public int? TypeId { get; set; }
-
-		public string Sort { get; set; }
-
 		private string _search;
 
 		//And what we want to make sure is that we're always checking against a lower case property here, 
@@ -29,7 +29,10 @@ namespace Core.Specifications
 		public string Search
 		{
 			get => _search;
-			set => _search=value.ToLower();
+			set => _search = value.ToLower();
 		}
+
+		
+
 	}
 }

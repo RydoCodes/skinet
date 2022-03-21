@@ -7,11 +7,11 @@ namespace Core.Specifications
 {
     public abstract class BaseSpecification<T> : ISpecification<T>
     {
-        public BaseSpecification()
+        protected BaseSpecification()
         {        
         }
         
-        public BaseSpecification(Expression<Func<T,bool>> criteria)
+        protected BaseSpecification(Expression<Func<T,bool>> criteria)
         {
             Criteria = criteria; // You can set a property in constructor even without specifying private set for Criteria.
         }

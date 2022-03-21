@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Infrastructure.Data;
 using Core.Entities;
@@ -20,12 +21,14 @@ namespace Infrastructure.Data
 		/* ------------------Without including Product Type and Product Brand navigational properties------------------*/
 		public async Task<IReadOnlyList<Product>> GetProductsAsync_NoBrandTypes()
 		{
-			IReadOnlyList<Product> Products = await _context.Products.ToListAsync();
+			IQueryable<Product> ProductsQuery =  _context.Products;
+			IReadOnlyList<Product> Products = await ProductsQuery.ToListAsync();
 			return Products;
 		}
 		public async Task<Product> GetProductById__NoBrandTypes(int id)
 		{
-			Product product = await _context.Products.FindAsync(id);
+			DbSet<Product> ProductQuery = _context.Products;
+			Product product = await ProductQuery.FindAsync(id);
 			return product;
 		}
 
@@ -45,10 +48,12 @@ namespace Infrastructure.Data
 		/* ------------------including Product Type and Product Brand navigational properties------------------*/
 		public async Task<Product> GetProductById_Eager(int id)
 		{
-			return await _context.Products
-			.Include(p => p.ProductType)
-			.Include(p => p.ProductBrand)
-			.FirstOrDefaultAsync(p => p.Id == id); // point when the query is sent to SQL
+			IQueryable<Product> ProductQuery = _context.Products
+														.Include(p => p.ProductType)
+														.Include(p => p.ProductBrand);
+
+			Product product = await ProductQuery.FirstOrDefaultAsync(p => p.Id == id);// point when the query is sent to SQL
+			return product;
 		}
 
 		//including Product Type and Product Brand navigational properties

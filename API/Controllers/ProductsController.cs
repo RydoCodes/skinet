@@ -23,7 +23,7 @@ namespace API.Controllers
     public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productsRepo;
-        private IGenericRepository<ProductBrand> _productBrandRepo;
+        private readonly IGenericRepository<ProductBrand> _productBrandRepo;
         private readonly IGenericRepository<ProductType> _productTypeRepo;
         private readonly IMapper _mapper;
         private readonly IProductRepository _nongenericrepo;
@@ -126,7 +126,6 @@ namespace API.Controllers
             IReadOnlyList<ProductToReturnDto> data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(Products);
 
             return Ok(new Pagination<ProductToReturnDto>(productParams.PageIndex, productParams.PageSize, totalitems, data));
-
 
         }
 

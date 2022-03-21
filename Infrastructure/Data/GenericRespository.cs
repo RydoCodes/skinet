@@ -38,20 +38,23 @@ namespace Infrastructure.Data
         {
             IQueryable<T> finalquery = ApplySpecification(spec);
 
-            return await finalquery.FirstOrDefaultAsync(); // FirstOrDefaultAsync() is defined for a variable of type IQueryable but FindAsync is not.
+            T product = await finalquery.FirstOrDefaultAsync(); // FirstOrDefaultAsync() is defined for a variable of type IQueryable but FindAsync is not.
+            return product;
         }
 
         public async Task<IReadOnlyList<T>> ListAsyncwithSpec(ISpecification<T> spec) // Get All Product with specification pattern and get ProductType and ProductBrand
         {
             IQueryable<T> finalquery = ApplySpecification(spec); //Applying the Specification->Includes and Criteria to the Enntity which is Product.
 
-            return await finalquery.ToListAsync(); // ToListAsync() : Asynchronously creates a List<T> from an IQueryable<out T> by enumerating it asynchronously.
+            IReadOnlyList<T> products = await finalquery.ToListAsync(); // ToListAsync() : Asynchronously creates a List<T> from an IQueryable<out T> by enumerating it asynchronously.
+            return products;
         }
 
         public async Task<int> CountAsyncwithSpec(ISpecification<T> spec) // Get list of total products sorted, or, searched, or by brand or type
         {
             IQueryable<T> finalquery = ApplySpecification(spec);
-            return await finalquery.CountAsync();
+            int count = await finalquery.CountAsync();
+            return count;
         }
 
         ////////// Below is Private Method ////////////
